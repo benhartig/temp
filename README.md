@@ -24,7 +24,7 @@ Description
 - [Folder Structure](#file_folder-folder-structure)
 - [Notes](#sparkles-notes)
 
-## :hammer: Installation
+## :toolbox: Installation
 
 ## :beginner: Stack Types
 
@@ -32,7 +32,7 @@ Description
 
 > ### application
 
-## :diamond_shape_with_a_dot_inside: Stack Diagram
+## :classical_building: Stack Architecture
 
 ## :books: Clusters
 
@@ -42,7 +42,7 @@ Description
 
 > ### Details
 
-## :green_book: Instances
+## :closed_book: Instances
 
 > ### Launch
 
@@ -52,8 +52,8 @@ Description
 
 ## :mag: Code Linting & Formatting
 
-## :arrow_forward: MakeFile Commands
+## :gear: MakeFile Commands
 
 ## :file_folder: Folder Structure
 
-## :sparkles: Notes
+## :speech_balloon: Notes
