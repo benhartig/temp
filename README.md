@@ -4,44 +4,37 @@
 
 Description
 
-## Table Of Contents
+## :book: Table Of Contents
 
-- [Installation](#installation)
-- [Stack Types](#stack-types)
+- [Installation](#-hammer--installation)
+- [Stack Types](#-beginner--stack-types)
     - [cluster](#cluster)
     - [application](#application)
-- [Stack Diagram](#stack-diagram)
-- [Clusters](#stack-types)
+- [Stack Diagram](#-diamond-shape-with-a-dot-inside--stack-diagram)
+- [Clusters](#-books--clusters)
   - [Launch](#launch)
   - [Update](#update)
   - [Details](#details)
-- [Instances](#stack-types)
+- [Instances](#-green-book--instances)
     - [Launch](#launch-1)
     - [Update](#update-1)
     - [Details](#details-1)
-- [MakeFile Commands](#makefile-commands)
-- [Folder Structure](#folder-structure)
-- [Notes](#notes)
+- [Code Linting & Formatting](#-mag--code-linting---formatting)
+- [MakeFile Commands](#-arrow-forward--makefile-commands)
+- [Folder Structure](#-file-folder--folder-structure)
+- [Notes](#-sparkles--notes)
 
-## Installation
+## :hammer: Installation
 
-## Stack Types
+## :beginner: Stack Types
 
 > ### cluster
 
 > ### application
 
-## Stack Diagram
+## :diamond_shape_with_a_dot_inside: Stack Diagram
 
-## Clusters
-
-> ### Launch
-
-> ### Update
-
-> ### Details
-
-## Instances
+## :books: Clusters
 
 > ### Launch
 
@@ -49,8 +42,18 @@ Description
 
 > ### Details
 
-## MakeFile Commands
+## :green_book: Instances
 
-## Folder Structure
+> ### Launch
 
-## Notes
+> ### Update
+
+> ### Details
+
+## :mag: Code Linting & Formatting
+
+## :arrow_forward: MakeFile Commands
+
+## :file_folder: Folder Structure
+
+## :sparkles: Notes
