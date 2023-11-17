@@ -1,69 +1,173 @@
 # Navex Sanity Studio Infrastructure
 
-Sanity provides projects a single studio hosted solution. To expand hosting
-Sanity Studios for different datasets this infrastructure stack will create S3
-hosted Cloudfront Distrubutions then upload a compiled Sanity Studio.
+[Sanity.io](https://www.sanity.io/) provides projects a single 
+[Sanity Studio](https://www.sanity.io/studio) that they host and provides access
+to a single dataset at a time. Recently Sanity.io has provided a new way to
+access other datasets from their hosted Sanity Studio call
+[Workspaces](https://www.sanity.io/docs/workspaces). However this doesn't 
+provided the flexablity to deploy different configurations of the Sanity Studio
+for  different datasets.
+
+To expand the flexablity of providing different instances of the Sanity Studio
+for different datasets this infrastructure stack will create S3 backed
+Cloudfront Distrubution and host a compiled version of the Sanity Studio
+from `./studio`.
+
+
+
 
 ## :book: Table Of Contents
 
 - [Installation](#toolbox-installation)
+- [Notes](#speech_balloon-notes)
 - [Stack Types](#beginner-stack-types)
     - [cms](#cms)
+        - [Launch](#launch)
+        - [Update](#update)
+        - [Details](#details)
     - [cms-cert](#cms-cert)
-- [Stack Diagram](#classical_building-stack-architecture)
-- [Clusters](#books-clusters)
-- [Instances](#closed_book-instances)
-    - [Launch](#launch-1)
-    - [Update](#update-1)
-    - [Details](#details-1)
+        - [Launch](#launch-1)
+        - [Update](#update-1)
+        - [Details](#details-1)
+- [Stack Architecture](#classical_building-stack-architecture)
+    - [cms](#cms-1)
+    - [cms-cert](#cms-cert-1)
 - [Code Linting & Formatting](#mag-code-linting--formatting)
 - [MakeFile Commands](#gear-makefile-commands)
 - [Folder Structure](#file_folder-folder-structure)
-- [Notes](#speech_balloon-notes)
 
-## :toolbox: Installation
 
-## :beginner: Stack Types
 
-> ### cms
+## :sparkles: Quick Commands
 
 > ### cms-cert
 
+> ### cms
+
+
+## :toolbox: Installation
+
+
+## :speech_balloon: Notes
+
+> [!IMPORTANT]
+> This infrastruture is for **testing** and **staging** instances.
+See `./studio/README.md` for **production** deployments to Sanity hosted studio.
+
+> [!WARNING]
+> This stack creates CloudFront Distrubutions in a different region than
+`us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
+stack must be launched from `us-east-1` [^1] and provide the `cms`
+stack the ARN of the certificate.
+
+
+
+
+## :beginner: Stack Types
+
+> [!NOTE]
+> This infrastructure does not contain any actual ECS clusters and uses the 
+`clusters:` configuration to direct what region and which account CloudFormation
+stacks are launched to.
+
+> ### cms-cert
+
+#### Launch
+
+#### Update
+
+#### Details
+
+> ### cms
+
+#### Launch
+
+#### Update
+
+#### Details
+
+
+
+
 ## :classical_building: Stack Architecture
 
-## :books: Clusters
+> ### cms-cert
 
-## :closed_book: Instances
+    ┌──────────────┐
+    │              │
+    │ Certifica... │
+    │              │
+    │ Certificate  │
+    │              │
+    └──────────────┘
 
-> ### Launch
+> ### cms
 
-> ### Update
+    ┌──────────────┐
+    │              │
+    │ Certifica... │
+    │              │
+    │ Certificate  │
+    │              │
+    └──────────────┘
 
-> ### Details
+
+    ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
+    │              │   │              │   │              │   │              │
+    │ S3BucketP... │   │   S3Bucket   │   │ Cloudfron... │   │ Route53Re... │
+    │              ├──►│              │◄──┤              │◄──┤              │
+    │ BucketPolicy │   │    Bucket    │   │ Distribution │   │ RecordSetGr. │
+    │              │   │              │   │              │   │              │
+    └──────┬───────┘   └──────────────┘   └──────┬───────┘   └──────────────┘
+           │                                     │
+           │                                     ▼
+           │                              ┌──────────────┐
+           │                              │              │
+           │                              │ Cloudfron... │
+           └─────────────────────────────►│              │
+                                          │ CloudfontO.. │
+                                          │              │
+                                          └──────────────┘
+
+
+
 
 ## :mag: Code Linting & Formatting
+
+
+
+
+
 
 ## :gear: MakeFile Commands
 
 | Command                           | Needed ENV | Description                                                          |
 | --------------------------------- | ---------- | -------------------------------------------------------------------- |
 | `make help`                       |            | Show help and list make commands                                     |
-| `make remote-build-s3-cms`        | TYPE       | Build the public Sanity Studio files                                 |
-| `make remote-push-s3-cms`         | TYPE       | Push files to S3 and create invalidation for Cloudfront distrubution |
-| `make github-push-s3-cms`         | TYPE       | Special command when using Github Actions for `remote-push-s3-cms`   |
+| `make remote-build-s3-cms`        |    TYPE    | Build the public Sanity Studio files                                 |
+| `make remote-push-s3-cms`         |    TYPE    | Push files to S3 and create invalidation for Cloudfront distrubution |
+| `make github-push-s3-cms`         |    TYPE    | Special command when using Github Actions for `remote-push-s3-cms`   |
 | `make install`                    |            | Install the requirements to manage infrastructure                    |
 | `make fmt-check`                  |            | Run all format checks                                                |
 | `make fmt-check-infrastructure`   |            | Run cfn-init and yamllint on infrastructure AWS code                 |
 
+
+
+
 ## :file_folder: Folder Structure
 
     .
-    └── infrastructure/
-        ├── cms-cert.yaml
-        ├── cms.yaml
-        ├── config.yaml
-        ├── Makefile
-        ├── README.md
-        └── requirements.txt
+    ├── infrastructure/
+    │   ├── cms-cert.yaml          # CMS Cert Stack
+    │   ├── cms.yaml               # CMS Cloudfront Hosted Stack
+    │   ├── config.yaml            # Stack configurations
+    │   ├── Makefile
+    │   ├── README.md
+    │   └── requirements.txt
+    ├── preview/
+    ├── README.md
+    ├── studio/
+    └── website/
 
-## :speech_balloon: Notes
+[^1]:
+    https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region
