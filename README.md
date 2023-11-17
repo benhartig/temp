@@ -45,7 +45,7 @@ hosted Cloudfront Distrubutions then upload a compiled Sanity Studio.
 
 ## :gear: MakeFile Commands
 
-| Command                           | ENV Needed | Description                                                          |
+| Command                           | Needed ENV | Description                                                          |
 | --------------------------------- | ---------- | -------------------------------------------------------------------- |
 | `make help`                       |            | Show help and list make commands                                     |
 | `make remote-build-s3-cms`        | TYPE       | Build the public Sanity Studio files                                 |
@@ -56,5 +56,14 @@ hosted Cloudfront Distrubutions then upload a compiled Sanity Studio.
 | `make fmt-check-infrastructure`   |            | Run cfn-init and yamllint on infrastructure AWS code                 |
 
 ## :file_folder: Folder Structure
+
+    .
+    └── infrastructure/
+        ├── cms-cert.yaml
+        ├── cms.yaml
+        ├── config.yaml
+        ├── Makefile
+        ├── README.md
+        └── requirements.txt
 
 ## :speech_balloon: Notes
