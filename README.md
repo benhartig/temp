@@ -9,7 +9,7 @@ provided the flexablity to deploy different configurations of the Sanity Studio
 for  different datasets.
 
 To expand the flexablity of providing different instances of the Sanity Studio
-for different datasets this infrastructure stack will create S3 backed
+for different datasets this infrastructure stack will create a S3 backed
 Cloudfront Distrubution and host a compiled version of the Sanity Studio
 from `./studio`.
 
@@ -21,7 +21,7 @@ from `./studio`.
 - [Installation](#toolbox-installation)
 - [Notes](#speech_balloon-notes)
 - [Stack Types](#beginner-stack-types)
-    - [cms](#cms)
+    - [cms](#cms-1)
         - [Launch](#launch)
         - [Update](#update)
         - [Details](#details)
@@ -30,7 +30,7 @@ from `./studio`.
         - [Update](#update-1)
         - [Details](#details-1)
 - [Stack Architecture](#classical_building-stack-architecture)
-    - [cms](#cms-1)
+    - [cms](#cms-2)
     - [cms-cert](#cms-cert-1)
 - [Code Linting & Formatting](#mag-code-linting--formatting)
 - [MakeFile Commands](#gear-makefile-commands)
@@ -40,9 +40,17 @@ from `./studio`.
 
 ## :sparkles: Quick Commands
 
-> ### cms-cert
-
 > ### cms
+
+```console
+TYPE=testing make remote-push-s3-cms
+```
+
+```console
+TYPE=staging make remote-push-s3-cms
+```
+
+
 
 
 ## :toolbox: Installation
@@ -68,7 +76,7 @@ stack the ARN of the certificate.
 > [!NOTE]
 > This infrastructure does not contain any actual ECS clusters and uses the 
 `clusters:` configuration to direct what region and which account CloudFormation
-stacks are launched to.
+stacks are launched.
 
 > ### cms-cert
 
@@ -134,7 +142,16 @@ stacks are launched to.
 
 ## :mag: Code Linting & Formatting
 
+To maintain code consistency and ensure proper code formatting the following tools are used:
 
+  * [cfn-lint](https://github.com/aws-cloudformation/cfn-lint)
+  * [yamllint](https://github.com/adrienverge/yamllint)
+
+To run lint and format checks:
+
+```console
+make fmt-check
+```
 
 
 
@@ -168,6 +185,9 @@ stacks are launched to.
     ├── README.md
     ├── studio/
     └── website/
+
+
+
 
 [^1]:
     https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region
