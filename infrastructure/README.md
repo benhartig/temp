@@ -64,12 +64,14 @@ host i-* mi-*
 The following external services are 3rd party intergrations with the site that
 need to be setup and configured before stacks are launched.
 
-* [Adobe Marketo Engage](https://marketo.com/) - marketing engagement
-* [Algolia](https://www.algolia.com/) - search backend
-* [Cloudinary](https://cloudinary.com/) - media hosting
-* [Cookiebot](https://www.cookiebot.com/) - GDPR popup
-* [Google Analytics](https://analytics.google.com/) - analytics tracking
-* [Sanity.io](https://www.sanity.io/) - cms and content backend
+* [Adobe Marketo Engage](https://marketo.com) - marketing engagement
+* [Algolia](https://www.algolia.com) - search backend
+* [Cloudinary](https://cloudinary.com) - media hosting
+* [Cookiebot](https://www.cookiebot.com) - GDPR popup
+* [Google Analytics](https://analytics.google.com) - analytics tracking
+* [Sanity.io](https://www.sanity.io) - cms and content backend
+* [Sentry.io](https://sentry.io) - error reporting
+* [Slack](https://slack.com) - build notifications
 
 
 
@@ -117,13 +119,15 @@ than `us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
  and `web-cert` stack must be launched from `us-east-1` [^1], then provide the
 `cms` stack and `web` stack with the ARN of the certificates.
 
+
 > [!NOTE]  
 > You don't have to use `aws sts assume-role` or `assume-role` if you are not
-coming from another AWS account and have direct access keys.
+coming from another AWS account and have direct AWS access keys.
+
 
 > [!TIP]
 > CMS Cloudfront S3 Bucket Policy sometimes has issues when deploying or
-updating and will get an access deined to placing the policy for the S3 bucket.
+updating and sometimes access deined when placing the policy for the S3 bucket.
 Solution is to add this inline policy because the normal S3 policy doesn't seem
 to allow for `s3:PutBucketPolicy`.
 
@@ -141,6 +145,7 @@ to allow for `s3:PutBucketPolicy`.
 }
 ```
 
+
 > [!TIP]
 > If you install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
 from the [Installation](#toolbox-installation) section you can use the 
@@ -155,6 +160,7 @@ ssh -i ~/.ssh/<ssh key> ec2-user@<instance id>
 aws ssm start-session --region <region> --target <instance id> --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters host="<db host>",portNumber="5432",localPortNumber="5432"
 ```
 
+
 > [!TIP]
 > To migrate the Discourse forum service you can run the following inside the
 forum container.
@@ -162,6 +168,7 @@ forum container.
 ```console
 RAILS_ENV=production /usr/local/bin/bundle exec rake db:migrate
 ```
+
 
 > [!TIP]
 > To create a new admin uesr for the Discourse forum service you can run the
