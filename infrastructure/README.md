@@ -4,7 +4,6 @@
 
 
 
-
 ## :bulb: 10,000 foot Services Overview
 
 ![Services Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-services.png?raw=true)
@@ -13,7 +12,7 @@
 
 - [Installation](#toolbox-installation)
 - [Notes](#speech_balloon-notes)
-- [Stack Types](#beginner-stack-types)
+- [Stack Architecture](#classical_building-stack-architecture)
     - [backup](#backup)
     - [cluster](#cluster)
     - [cms](#cms)
@@ -27,21 +26,8 @@
     - [tracking](#tracking)
     - [web](#web)
     - [web-cert](#web-cert)
-- [Stack Architecture](#classical_building-stack-architecture)
-    - [backup](#backup-1)
-    - [cluster](#cluster-1)
-    - [cms](#cms-1)
-    - [cms-cert](#cms-cert-1)
-    - [deploy-pipeline](#deploy-pipeline-1)
-    - [deploy-user](#deploy-user-1)
-    - [forum](#forum-1)
-    - [legacy](#legacy-1)
-    - [resources](#resources-1)
-    - [support-center-bucket](#support-center-bucket-1)
-    - [tracking](#tracking-1)
-    - [web](#web-1)
-    - [web-cert](#web-cert-1)
 - [Code Linting & Formatting](#mag-code-linting--formatting)
+- [`stacked` Commands](#gear-stacked-commands)
 - [MakeFile Commands](#gear-makefile-commands)
 - [Footnotes](#link-footnotes)
 
@@ -60,38 +46,11 @@ stack the ARN of the certificate.
 
 
 
-## :beginner: Stack Types
-
-> ### backup
-
-> ### cms
-
-> ### cms-cert
-
-> ### cluster
-
-> ### deploy-pipeline
-
-> ### deploy-user
-
-> ### forum
-
-> ### legacy
-
-> ### resources
-
-> ### support-center-bucket
-
-> ### tracking
-
-> ### web-cert
-
-> ### web
-
-
-
-
 ## :classical_building: Stack Architecture
+
+## :bulb: 10,000 foot Stacks Overview
+
+![Stacks Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-stacks.png?raw=true)
 
 > ### backup
 
@@ -135,7 +94,7 @@ To run lint and format checks:
 make fmt-check
 ```
 
-
+## :gear: `stackedup` Commands
 
 
 ## :gear: MakeFile Commands
