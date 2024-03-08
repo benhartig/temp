@@ -11,8 +11,8 @@
 ## :book: Table Of Contents
 
 - [Installation](#toolbox-installation)
-- [Notes](#speech_balloon-notes)
 - [Stack Architecture](#classical_building-stack-architecture)
+- [Notes](#speech_balloon-notes)
     - [backup](#backup)
     - [cluster](#cluster)
     - [cms](#cms)
@@ -29,11 +29,21 @@
 - [Code Linting & Formatting](#mag-code-linting--formatting)
 - [`stacked` Commands](#gear-stacked-commands)
 - [MakeFile Commands](#gear-makefile-commands)
+- [Folder Structure](#file_folder-folder-structure)
 - [Footnotes](#link-footnotes)
 
 
 ## :toolbox: Installation
 
+
+
+
+
+## :classical_building: Stack Architecture
+
+## :bulb: 10,000 foot Stack Overview
+
+![Stack Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-stacks.png?raw=true)
 
 ## :speech_balloon: Notes
 
@@ -42,15 +52,6 @@
 `us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
 stack must be launched from `us-east-1` [^1] and provide the `cms`
 stack the ARN of the certificate.
-
-
-
-
-## :classical_building: Stack Architecture
-
-## :bulb: 10,000 foot Stacks Overview
-
-![Stacks Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-stacks.png?raw=true)
 
 > ### backup
 
@@ -94,7 +95,23 @@ To run lint and format checks:
 make fmt-check
 ```
 
+
+
+
 ## :gear: `stackedup` Commands
+
+Infrastructure makes extensive use of [OMBU Stackedup](https://github.com/ombu/stacks) for configurating, packaging, launching and updating
+AWS CloudFormation templates in the form of stacks.
+
+| Command                                                           | Options    | Description                                                      |
+| ----------------------------------------------------------------- | ---------- | ---------------------------------------------------------------- |
+| `assume-role <account>`                                           |            | Assume a role defined in the accounts section of `config.yaml`   |
+| `stack-launch <service> <instance>`                               | `--config` | Launch a new stack from the `config.yaml`                        |
+| `stack-update <service> <instance>`                               | `--config` | Update an exisitng stack                                         |
+| `stack-details <service> <instance>`                              | `--config` | Get details of an existing stack                                 |
+| `container-shell <instance> <service> <service-name> <container>` | `--config` | Shell into an ECS Serviced from a stack defined in `config.yaml` |
+
+
 
 
 ## :gear: MakeFile Commands
@@ -125,7 +142,80 @@ make fmt-check
 
 
 
-## :link: Footnotes
+## :file_folder: Folder Structure
+
+  .
+  └── infrastructure/
+      ├── .images
+      ├── backup-parts/
+      │   ├── backup.sh
+      │   ├── Dockerfile
+      │   ├── README.md
+      │   └── scheduled-task.yaml
+      ├── backup.yaml
+      ├── cluster-parts/
+      │   ├── database.yaml
+      │   ├── ecs.yaml
+      │   ├── filesystem.yaml
+      │   ├── lifecyclehook.yaml
+      │   ├── load-balancer.yaml
+      │   ├── security-groups.yaml
+      │   └── vpc.yaml
+      ├── cluster.yaml
+      ├── cms-cert.yaml
+      ├── cms.yaml
+      ├── config.hls.yaml
+      ├── config.yaml
+      ├── deploy-pipeline-parts/
+      │   └── deploy-notification/
+      │       ├── deploy_notification.py
+      │       └── deploy_notification_lambda.py
+      ├── deploy-pipeline.yaml
+      ├── deploy-user.yaml
+      ├── docker/
+      │   ├── Dockerfile.web.remote
+      │   └── forum/
+      │       ├── discourse/
+      │       │   ├── bin
+      │       │   ├── cids
+      │       │   ├── containers/
+      │       │   │   └── web_only.yml
+      │       │   ├── launcher
+      │       │   ├── LICENSE
+      │       │   ├── plugins
+      │       │   ├── README.md
+      │       │   ├── shared
+      │       │   └── templates/
+      │       │       ├── web.ratelimited.template.yml
+      │       │       └── web.template.yml
+      │       ├── discourse-verification-academy-theme
+      │       └── docker-compose-temp-build.yml
+      ├── forum.yaml
+      ├── legacy.yaml
+      ├── Makefile
+      ├── README.md
+      ├── requirements.txt
+      ├── resources.yaml
+      ├── support-center-bucket.yaml
+      ├── tracking-parts/
+      │   ├── tracking-deploy-pipeline.yaml
+      │   └── tracking-deploy-script/
+      │       └── tracking-deploy-script.py
+      ├── tracking.yaml
+      ├── web-cert.yaml
+      ├── web-parts/
+      │   ├── cloudfront.yaml
+      │   ├── queue.yaml
+      │   ├── static-hosting.yaml
+      │   ├── web-deploy-pipeline.yaml
+      │   └── web-deploy-script/
+      │       └── web-deploy-script.py
+      └── web.yaml
+
+
+
+
+# :link: Footnotes
 
 [^1]:
     https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region
