@@ -11,6 +11,7 @@
 ## :book: Table Of Contents
 
 - [Installation](#toolbox-installation)
+- [External Services](#diamond_shape_with_a_dot_inside-external-services)
 - [Stack Architecture](#classical_building-stack-architecture)
 - [Notes](#speech_balloon-notes)
     - [backup](#backup)
@@ -35,6 +36,27 @@
 
 ## :toolbox: Installation
 
+Install the dependencies:
+ 
+```console
+make install
+```
+
+> [!TIP]
+> Install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+to be able to interact with EC2 and ECS containers since compute resources are
+behind private subnets in the VPC. Then add the following to your `.ssh/config`.
+
+```console
+# SSH over AWS Systems Manager Session Manager
+host i-* mi-*
+    ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
+```
+
+
+
+
+## :diamond_shape_with_a_dot_inside: External Services
 
 
 
@@ -50,8 +72,8 @@
 > [!WARNING]
 > This stack creates CloudFront Distrubutions in a different region than
 `us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
-stack must be launched from `us-east-1` [^1] and provide the `cms`
-stack the ARN of the certificate.
+ and `web-cert` stack must be launched from `us-east-1` [^1] and provide the
+`cms` and `web` stack the ARN of the certificate.
 
 > ### backup
 
@@ -215,7 +237,7 @@ AWS CloudFormation templates in the form of stacks.
 
 
 
-# :link: Footnotes
+## :link: Footnotes
 
 [^1]:
     https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region
