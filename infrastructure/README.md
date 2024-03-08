@@ -140,6 +140,21 @@ coming from another AWS account and have direct AWS access keys.
 
 
 > [!TIP]
+> If you install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+from the [Installation](#toolbox-installation) section you can use the 
+`instance id` of the EC2 instance to `ssh` and access the containers or start a 
+remote port forward to access the database with the following commands.
+
+```console
+ssh -i ~/.ssh/<ssh key> ec2-user@<instance id>
+```
+
+```console
+aws ssm start-session --region <region> --target <instance id> --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters host="<db host>",portNumber="5432",localPortNumber="5432"
+```
+
+
+> [!TIP]
 > CMS Cloudfront S3 Bucket Policy sometimes has issues when deploying or
 updating and sometimes access deined when placing the policy for the S3 bucket.
 Solution is to add this inline policy because the normal S3 policy doesn't seem
@@ -157,21 +172,6 @@ to allow for `s3:PutBucketPolicy`.
         "Effect": "Allow"
     }
 }
-```
-
-
-> [!TIP]
-> If you install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
-from the [Installation](#toolbox-installation) section you can use the 
-`instance id` of the EC2 instance to `ssh` and access the containers or start a 
-remote port forward to access the database with the following commands.
-
-```console
-ssh -i ~/.ssh/<ssh key> ec2-user@<instance id>
-```
-
-```console
-aws ssm start-session --region <region> --target <instance id> --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters host="<db host>",portNumber="5432",localPortNumber="5432"
 ```
 
 
