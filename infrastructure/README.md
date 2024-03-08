@@ -127,7 +127,7 @@ The following are resources created manually and aren't part of any stacks.
 
 ## :speech_balloon: Notes
 
-> [!WARNING]
+> [!IMPORTANT]
 > This infrastructure creates CloudFront Distrubutions in a different region
 than `us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
  and `web-cert` stack must be launched from `us-east-1` [^1], then provide the
@@ -159,48 +159,44 @@ aws ssm start-session --region <region> --target <instance id> --document-name A
 updating and sometimes access deined when placing the policy for the S3 bucket.
 Solution is to add this inline policy because the normal S3 policy doesn't seem
 to allow for `s3:PutBucketPolicy`.
-
-```console
-{
-    "Version": "2012-10-17",
-    "Statement": {
-        "Action": [
-            "s3:*",
-            "cloudformation:*"
-        ],
-        "Resource": "*",
-        "Effect": "Allow"
-    }
-}
-```
+> ```console
+> {
+>     "Version": "2012-10-17",
+>     "Statement": {
+>         "Action": [
+>             "s3:*",
+>             "cloudformation:*"
+>         ],
+>         "Resource": "*",
+>         "Effect": "Allow"
+>     }
+> }
+> ```
 
 
 > [!TIP]
 > To migrate the Discourse forum service you can run the following inside the
 forum container.
-
-```console
-RAILS_ENV=production /usr/local/bin/bundle exec rake db:migrate
-```
+> ```console
+> RAILS_ENV=production /usr/local/bin/bundle exec rake db:migrate
+> ```
 
 
 > [!TIP]
 > To create a new admin uesr for the Discourse forum service you can run the
 following inside the forum container.
-
-```console
-RAILS_ENV=production /usr/local/bin/bundle exec rake admin:create
-```
+> ```console
+> RAILS_ENV=production /usr/local/bin/bundle exec rake admin:create
+> ```
 
 
 > [!CAUTION]
 > When creating a new installation of the forum service, you might need to reset
 database, use hte following inside the container to do so, but warning it will
 delete everything and reset.
-
-```console
-DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rake db:drop db:create db:migrate
-```
+> ```console
+> DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rake db:drop db:create db:migrate
+> ```
 
 
 
