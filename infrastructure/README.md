@@ -2,8 +2,6 @@
 
 ![GitHub Action badge](https://github.com/ombu/va-2023/workflows/build/badge.svg)
 
-
-
 ## :bulb: 10,000 foot Services Overview for each site
 
 ![Services Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-services.png?raw=true)
@@ -34,6 +32,8 @@
 - [Footnotes](#link-footnotes)
 
 
+
+
 ## :toolbox: Installation
 
 The infrastructure management uses Python 3.11. This version requirement is
@@ -60,6 +60,16 @@ host i-* mi-*
 
 
 ## :diamond_shape_with_a_dot_inside: External Services
+
+The following external services are 3rd party intergrations with the site that
+need to be setup and configured before stacks are launched.
+
+* [Adobe Marketo Engage](https://marketo.com/) - marketing engagement
+* [Algolia](https://www.algolia.com/) - search backend
+* [Cloudinary](https://cloudinary.com/) - media hosting
+* [Cookiebot](https://www.cookiebot.com/) - GDPR popup
+* [Google Analytics](https://analytics.google.com/) - analytics tracking
+* [Sanity.io](https://www.sanity.io/) - cms and content backend
 
 
 
@@ -101,19 +111,15 @@ host i-* mi-*
 
 ## :speech_balloon: Notes
 
-> [!NOTE]  
-> You don't have to use `assume-role` if you are not coming from another
-AWS account.
-
-> [!TIP]
-> Optional information to help a user be more successful.
-
-
 > [!WARNING]
 > This infrastructure creates CloudFront Distrubutions in a different region
 than `us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
  and `web-cert` stack must be launched from `us-east-1` [^1], then provide the
 `cms` stack and `web` stack with the ARN of the certificates.
+
+> [!NOTE]  
+> You don't have to use `aws sts assume-role` or `assume-role` if you are not
+coming from another AWS account and have direct access keys.
 
 > [!TIP]
 > CMS Cloudfront S3 Bucket Policy sometimes has issues when deploying or
@@ -133,6 +139,36 @@ to allow for `s3:PutBucketPolicy`.
         "Effect": "Allow"
     }
 }
+```
+
+> [!TIP]
+> If you install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+from the [Installation](#toolbox-installation) section you can use the 
+`instance id` of the EC2 instance to `ssh` and access the containers or start a 
+remote port forward to access the database with the following commands.
+
+```console
+ssh -i ~/.ssh/<ssh key> ec2-user@<instance id>
+```
+
+```console
+aws ssm start-session --region <region> --target <instance id> --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters host="<db host>",portNumber="5432",localPortNumber="5432"
+```
+
+> [!TIP]
+> To migrate the Discourse forum service you can run the following inside the
+forum container.
+
+```console
+RAILS_ENV=production /usr/local/bin/bundle exec rake db:migrate
+```
+
+> [!TIP]
+> To create a new admin uesr for the Discourse forum service you can run the
+following inside the forum container.
+
+```console
+RAILS_ENV=production /usr/local/bin/bundle exec rake admin:create
 ```
 
 
