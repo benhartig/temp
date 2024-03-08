@@ -144,14 +144,14 @@ coming from another AWS account and have direct AWS access keys.
 from the [Installation](#toolbox-installation) section you can use the 
 `instance id` of the EC2 instance to `ssh` and access the containers or start a 
 remote port forward to access the database with the following commands.
-
-```console
-ssh -i ~/.ssh/<ssh key> ec2-user@<instance id>
-```
-
-```console
-aws ssm start-session --region <region> --target <instance id> --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters host="<db host>",portNumber="5432",localPortNumber="5432"
-```
+> 
+> ```console
+> ssh -i ~/.ssh/<ssh key> ec2-user@<instance id>
+> ```
+> 
+> ```console
+> aws ssm start-session --region <region> --target <instance id> --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters host="<db host>",portNumber="5432",localPortNumber="5432"
+> ```
 
 
 > [!TIP]
@@ -159,6 +159,7 @@ aws ssm start-session --region <region> --target <instance id> --document-name A
 updating and sometimes access deined when placing the policy for the S3 bucket.
 Solution is to add this inline policy because the normal S3 policy doesn't seem
 to allow for `s3:PutBucketPolicy`.
+> 
 > ```console
 > {
 >     "Version": "2012-10-17",
@@ -177,6 +178,7 @@ to allow for `s3:PutBucketPolicy`.
 > [!TIP]
 > To migrate the Discourse forum service you can run the following inside the
 forum container.
+> 
 > ```console
 > RAILS_ENV=production /usr/local/bin/bundle exec rake db:migrate
 > ```
@@ -185,6 +187,7 @@ forum container.
 > [!TIP]
 > To create a new admin uesr for the Discourse forum service you can run the
 following inside the forum container.
+> 
 > ```console
 > RAILS_ENV=production /usr/local/bin/bundle exec rake admin:create
 > ```
@@ -194,6 +197,7 @@ following inside the forum container.
 > When creating a new installation of the forum service, you might need to reset
 database, use hte following inside the container to do so, but warning it will
 delete everything and reset.
+> 
 > ```console
 > DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rake db:drop db:create db:migrate
 > ```
