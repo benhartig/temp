@@ -57,12 +57,12 @@ make install
 > Install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
 to be able to interact with EC2 compute and ECS containers resources that are
 behind a private subnet in the VPC. Then add the following to your `.ssh/config`.
-
-```console
-# SSH over AWS Systems Manager Session Manager
-host i-* mi-*
-    ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
-```
+>
+> ```console
+> # SSH over AWS Systems Manager Session Manager
+> host i-* mi-*
+>     ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
+> ```
 
 
 
