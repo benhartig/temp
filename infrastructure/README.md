@@ -2,6 +2,12 @@
 
 ![GitHub Action badge](https://github.com/ombu/va-2023/workflows/build/badge.svg)
 
+The Verification Academy is a valuable resource for individuals looking to
+enhance their understanding of advanced functional verification. It offers
+various learning tools and resources to help organizations develop their
+verification process capabilities. The following is the infrastructure to run
+the https://verificationacademy.com/ and subsequent sites.
+
 ## :bulb: 10,000 foot Services Overview for each site
 
 ![Services Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-services.png?raw=true)
@@ -11,6 +17,7 @@
 - [Installation](#toolbox-installation)
 - [External Services](#diamond_shape_with_a_dot_inside-external-services)
 - [Stack Architecture](#classical_building-stack-architecture)
+- [Stack Types](#beginner-stack-types)
     - [backup](#backup)
     - [cluster](#cluster)
     - [cms](#cms)
@@ -24,6 +31,7 @@
     - [tracking](#tracking)
     - [web](#web)
     - [web-cert](#web-cert)
+- [Misc AWS Resources Deployed](#mag-misc-aws-resources-deployed)
 - [Notes](#speech_balloon-notes)
 - [`stacked` Commands](#gear-stacked-commands)
 - [MakeFile Commands](#gear-makefile-commands)
@@ -82,6 +90,8 @@ need to be setup and configured before stacks are launched.
 
 ![Stack Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-stacks.png?raw=true)
 
+## :beginner: Stack Types
+
 > ### backup
 
 > ### cms
@@ -110,6 +120,10 @@ need to be setup and configured before stacks are launched.
 
 
 
+
+## :mag: Misc AWS Resources Deployed
+
+The following are resources created manually and aren't part of any stacks.
 
 ## :speech_balloon: Notes
 
@@ -176,6 +190,16 @@ following inside the forum container.
 
 ```console
 RAILS_ENV=production /usr/local/bin/bundle exec rake admin:create
+```
+
+
+> [!CAUTION]
+> When creating a new installation of the forum service, you might need to reset
+database, use hte following inside the container to do so, but warning it will
+delete everything and reset.
+
+```console
+DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rake db:drop db:create db:migrate
 ```
 
 
