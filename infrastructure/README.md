@@ -142,8 +142,7 @@ coming from another AWS account and have direct AWS access keys.
 > [!TIP]
 > If you install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
 from the [Installation](#toolbox-installation) section you can use the 
-`instance id` of the EC2 instance to `ssh` and access the containers or start a 
-remote port forward to access the database with the following commands.
+`instance id` of the EC2 instance to `ssh` and access the containers.
 >
 > ```console
 > ssh -i ~/.ssh/<ssh key> ec2-user@<instance id>
@@ -152,9 +151,8 @@ remote port forward to access the database with the following commands.
 
 > [!TIP]
 > If you install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
-from the [Installation](#toolbox-installation) section you can use the 
-`instance id` of the EC2 instance to `ssh` and access the containers or start a 
-remote port forward to access the database with the following commands.
+from the [Installation](#toolbox-installation) section you can use the following
+command to start a remote port forward to access the database.
 >
 > ```console
 > aws ssm start-session --region <region> --target <instance id> --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters host="<db host>",portNumber="5432",localPortNumber="5432"
@@ -166,7 +164,7 @@ remote port forward to access the database with the following commands.
 updating and sometimes access deined when placing the policy for the S3 bucket.
 Solution is to add this inline policy because the normal S3 policy doesn't seem
 to allow for `s3:PutBucketPolicy`.
-> =
+>
 > ```console
 > {
 >     "Version": "2012-10-17",
