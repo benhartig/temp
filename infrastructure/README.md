@@ -4,7 +4,7 @@
 
 
 
-## :bulb: 10,000 foot Services Overview
+## :bulb: 10,000 foot Services Overview for each site
 
 ![Services Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-services.png?raw=true)
 
@@ -13,7 +13,6 @@
 - [Installation](#toolbox-installation)
 - [External Services](#diamond_shape_with_a_dot_inside-external-services)
 - [Stack Architecture](#classical_building-stack-architecture)
-- [Notes](#speech_balloon-notes)
     - [backup](#backup)
     - [cluster](#cluster)
     - [cms](#cms)
@@ -27,14 +26,18 @@
     - [tracking](#tracking)
     - [web](#web)
     - [web-cert](#web-cert)
-- [Code Linting & Formatting](#mag-code-linting--formatting)
+- [Notes](#speech_balloon-notes)
 - [`stacked` Commands](#gear-stacked-commands)
 - [MakeFile Commands](#gear-makefile-commands)
+- [Code Linting & Formatting](#mag-code-linting--formatting)
 - [Folder Structure](#file_folder-folder-structure)
 - [Footnotes](#link-footnotes)
 
 
 ## :toolbox: Installation
+
+The infrastructure management uses Python 3.11. This version requirement is
+documented in the file .tool_versions and can be used with [asdf](https://asdf-vm.com/).
 
 Install the dependencies:
  
@@ -44,8 +47,8 @@ make install
 
 > [!TIP]
 > Install the [SSM Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
-to be able to interact with EC2 and ECS containers since compute resources are
-behind private subnets in the VPC. Then add the following to your `.ssh/config`.
+to be able to interact with EC2 compute and ECS containers resources that are
+behind a private subnet in the VPC. Then add the following to your `.ssh/config`.
 
 ```console
 # SSH over AWS Systems Manager Session Manager
@@ -66,14 +69,6 @@ host i-* mi-*
 ## :bulb: 10,000 foot Stack Overview
 
 ![Stack Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-stacks.png?raw=true)
-
-## :speech_balloon: Notes
-
-> [!WARNING]
-> This stack creates CloudFront Distrubutions in a different region than
-`us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
- and `web-cert` stack must be launched from `us-east-1` [^1] and provide the
-`cms` and `web` stack the ARN of the certificate.
 
 > ### backup
 
@@ -104,17 +99,40 @@ host i-* mi-*
 
 
 
-## :mag: Code Linting & Formatting
+## :speech_balloon: Notes
 
-To maintain code consistency and ensure proper code formatting the following tools are used:
+> [!NOTE]  
+> You don't have to use `assume-role` if you are not coming from another
+AWS account.
 
-  * [cfn-lint](https://github.com/aws-cloudformation/cfn-lint)
-  * [yamllint](https://github.com/adrienverge/yamllint)
+> [!TIP]
+> Optional information to help a user be more successful.
 
-To run lint and format checks:
+
+> [!WARNING]
+> This infrastructure creates CloudFront Distrubutions in a different region
+than `us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
+ and `web-cert` stack must be launched from `us-east-1` [^1], then provide the
+`cms` stack and `web` stack with the ARN of the certificates.
+
+> [!TIP]
+> CMS Cloudfront S3 Bucket Policy sometimes has issues when deploying or
+updating and will get an access deined to placing the policy for the S3 bucket.
+Solution is to add this inline policy because the normal S3 policy doesn't seem
+to allow for `s3:PutBucketPolicy`.
 
 ```console
-make fmt-check
+{
+    "Version": "2012-10-17",
+    "Statement": {
+        "Action": [
+            "s3:*",
+            "cloudformation:*"
+        ],
+        "Resource": "*",
+        "Effect": "Allow"
+    }
+}
 ```
 
 
@@ -160,6 +178,22 @@ AWS CloudFormation templates in the form of stacks.
 | `django/migrate`                         | ENV        | YES               | Run migrate on remote webhead.                            |
 | `prod-console`                           |            | YES               | Container shell for private vpc instances.                |
 | `log`                                    | INSTANCE   | YES               | Get the log for the web service.                          |
+
+
+
+
+## :mag: Code Linting & Formatting
+
+To maintain code consistency and ensure proper code formatting the following tools are used:
+
+  * [cfn-lint](https://github.com/aws-cloudformation/cfn-lint)
+  * [yamllint](https://github.com/adrienverge/yamllint)
+
+To run lint and format checks:
+
+```console
+make fmt-check
+```
 
 
 
