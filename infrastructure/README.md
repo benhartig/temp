@@ -144,73 +144,73 @@ AWS CloudFormation templates in the form of stacks.
 
 ## :file_folder: Folder Structure
 
-  .
-  └── infrastructure/
-      ├── .images
-      ├── backup-parts/
-      │   ├── backup.sh
-      │   ├── Dockerfile
-      │   ├── README.md
-      │   └── scheduled-task.yaml
-      ├── backup.yaml
-      ├── cluster-parts/
-      │   ├── database.yaml
-      │   ├── ecs.yaml
-      │   ├── filesystem.yaml
-      │   ├── lifecyclehook.yaml
-      │   ├── load-balancer.yaml
-      │   ├── security-groups.yaml
-      │   └── vpc.yaml
-      ├── cluster.yaml
-      ├── cms-cert.yaml
-      ├── cms.yaml
-      ├── config.hls.yaml
-      ├── config.yaml
-      ├── deploy-pipeline-parts/
-      │   └── deploy-notification/
-      │       ├── deploy_notification.py
-      │       └── deploy_notification_lambda.py
-      ├── deploy-pipeline.yaml
-      ├── deploy-user.yaml
-      ├── docker/
-      │   ├── Dockerfile.web.remote
-      │   └── forum/
-      │       ├── discourse/
-      │       │   ├── bin
-      │       │   ├── cids
-      │       │   ├── containers/
-      │       │   │   └── web_only.yml
-      │       │   ├── launcher
-      │       │   ├── LICENSE
-      │       │   ├── plugins
-      │       │   ├── README.md
-      │       │   ├── shared
-      │       │   └── templates/
-      │       │       ├── web.ratelimited.template.yml
-      │       │       └── web.template.yml
-      │       ├── discourse-verification-academy-theme
-      │       └── docker-compose-temp-build.yml
-      ├── forum.yaml
-      ├── legacy.yaml
-      ├── Makefile
-      ├── README.md
-      ├── requirements.txt
-      ├── resources.yaml
-      ├── support-center-bucket.yaml
-      ├── tracking-parts/
-      │   ├── tracking-deploy-pipeline.yaml
-      │   └── tracking-deploy-script/
-      │       └── tracking-deploy-script.py
-      ├── tracking.yaml
-      ├── web-cert.yaml
-      ├── web-parts/
-      │   ├── cloudfront.yaml
-      │   ├── queue.yaml
-      │   ├── static-hosting.yaml
-      │   ├── web-deploy-pipeline.yaml
-      │   └── web-deploy-script/
-      │       └── web-deploy-script.py
-      └── web.yaml
+    .
+    └── infrastructure/
+        ├── .images
+        ├── backup-parts/
+        │   ├── backup.sh
+        │   ├── Dockerfile
+        │   ├── README.md
+        │   └── scheduled-task.yaml
+        ├── backup.yaml
+        ├── cluster-parts/
+        │   ├── database.yaml
+        │   ├── ecs.yaml
+        │   ├── filesystem.yaml
+        │   ├── lifecyclehook.yaml
+        │   ├── load-balancer.yaml
+        │   ├── security-groups.yaml
+        │   └── vpc.yaml
+        ├── cluster.yaml
+        ├── cms-cert.yaml
+        ├── cms.yaml
+        ├── config.hls.yaml
+        ├── config.yaml
+        ├── deploy-pipeline-parts/
+        │   └── deploy-notification/
+        │       ├── deploy_notification.py
+        │       └── deploy_notification_lambda.py
+        ├── deploy-pipeline.yaml
+        ├── deploy-user.yaml
+        ├── docker/
+        │   ├── Dockerfile.web.remote
+        │   └── forum/
+        │       ├── discourse/
+        │       │   ├── bin
+        │       │   ├── cids
+        │       │   ├── containers/
+        │       │   │   └── web_only.yml
+        │       │   ├── launcher
+        │       │   ├── LICENSE
+        │       │   ├── plugins
+        │       │   ├── README.md
+        │       │   ├── shared
+        │       │   └── templates/
+        │       │       ├── web.ratelimited.template.yml
+        │       │       └── web.template.yml
+        │       ├── discourse-verification-academy-theme
+        │       └── docker-compose-temp-build.yml
+        ├── forum.yaml
+        ├── legacy.yaml
+        ├── Makefile
+        ├── README.md
+        ├── requirements.txt
+        ├── resources.yaml
+        ├── support-center-bucket.yaml
+        ├── tracking-parts/
+        │   ├── tracking-deploy-pipeline.yaml
+        │   └── tracking-deploy-script/
+        │       └── tracking-deploy-script.py
+        ├── tracking.yaml
+        ├── web-cert.yaml
+        ├── web-parts/
+        │   ├── cloudfront.yaml
+        │   ├── queue.yaml
+        │   ├── static-hosting.yaml
+        │   ├── web-deploy-pipeline.yaml
+        │   └── web-deploy-script/
+        │       └── web-deploy-script.py
+        └── web.yaml
 
 
 
