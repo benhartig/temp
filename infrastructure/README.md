@@ -37,7 +37,6 @@ the https://verificationacademy.com/ and subsequent sites.
 - [MakeFile Commands](#gear-makefile-commands)
 - [Code Linting & Formatting](#mag-code-linting--formatting)
 - [Folder Structure](#file_folder-folder-structure)
-- [Footnotes](#link-footnotes)
 
 
 
@@ -342,8 +341,6 @@ make fmt-check
 
 
 
-
-## :link: Footnotes
 
 [^1]:
     https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region
