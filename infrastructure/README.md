@@ -32,6 +32,7 @@ the https://verificationacademy.com/ and subsequent sites.
     - [web](#web)
     - [web-cert](#web-cert)
 - [Misc AWS Resources Deployed](#mag-misc-aws-resources-deployed)
+- [Website Parameters](key-website-parameters)
 - [Notes](#speech_balloon-notes)
 - [`stacked` Commands](#gear-stacked-commands)
 - [MakeFile Commands](#gear-makefile-commands)
@@ -79,7 +80,7 @@ need to be setup and configured before stacks are launched.
 * [Google Analytics](https://analytics.google.com) - analytics tracking
 * [Sanity.io](https://www.sanity.io) - cms and content backend
 * [Sentry.io](https://sentry.io) - error reporting
-* [Slack](https://slack.com) - build notifications
+* [Slack](https://slack.com) (optional) - build notifications
 
 
 
@@ -244,6 +245,28 @@ Buckets created for cloudformation templetes
 * cloudformation-hls-eu-729799859201
 * cloudformation-va2023-eu-729799859201
 
+> ### Forum Amazon SES key
+
+Discoures can't use role SES so SMTP legacy for this user.
+
+* ses-smtp-va2023-forum-production-20231221-120250
+
+> ### Route 53 Hosted zones
+
+Both verificationacademy.com and hls.academy control the DNS but both are
+configured to point the name servers to the following hosted zones.
+
+* verificationacademy.com
+* hls.academy
+
+> ### Various Amazon SES Identities
+
+* hls.academy
+* verificationacademy.com
+* info@hls.academy
+* info@verificationacademy.com
+* noreply@ombuweb.com
+
 > ### Legacy site CloudFormation Stack
 
 This stack hosts the legacy verificationacademy.com 1.0 site and solr search.
@@ -303,6 +326,42 @@ RDS Snapshots:
 * legacy-391166485564-va-prod-before-encrypt
 * legacy-391166485564-vdjji213hgsii0-snapshot-final
 * manual-prod-db-1postgres-oct-2-2023
+
+
+
+
+## :key: Website Parameters
+
+For the sites to run the following need to be filled out in AWS Systems Manager
+Parameter Store as SecureString.
+
+```
+/<site>/<environment>/VAATClientID
+/<site>/<environment>/VAATClientSecret
+/<site>/<environment>/algolia_api_key
+/<site>/<environment>/cloudinary_api_key
+/<site>/<environment>/cloudinary_api_secret
+/<site>/<environment>/cloudinary_auth_token
+/<site>/<environment>/discourse_api_key
+/<site>/<environment>/discourse_basic_auth_password
+/<site>/<environment>/discourse_basic_auth_username
+/<site>/<environment>/discourse_sso_secret
+/<site>/<environment>/forum_database_password
+/<site>/<environment>/forum_smtp_password
+/<site>/<environment>/forum_smtp_username
+/<site>/<environment>/marketo_client_id
+/<site>/<environment>/marketo_client_secret
+/<site>/<environment>/marketo_munchkin_id
+/<site>/<environment>/marketo_rest_root
+/<site>/<environment>/slack_uri
+/<site>/<environment>/support_center_access_key_id
+/<site>/<environment>/support_center_secret_access_key
+/<site>/<environment>/tracking_database_password
+/<site>/<environment>/web_database_password
+/<site>/<environment>/web_sanity_token
+/<site>/<environment>/web_sentry_dsn
+/<site>/<environment>/web_studio_secret
+```
 
 
 
