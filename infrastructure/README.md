@@ -75,6 +75,7 @@ need to be setup and configured before stacks are launched.
 * [Algolia](https://www.algolia.com) - search backend
 * [Cloudinary](https://cloudinary.com) - media hosting
 * [Cookiebot](https://www.cookiebot.com) - GDPR popup
+* [Github](https://github.com) (optional) - CICD 
 * [Google Analytics](https://analytics.google.com) - analytics tracking
 * [Sanity.io](https://www.sanity.io) - cms and content backend
 * [Sentry.io](https://sentry.io) - error reporting
@@ -93,27 +94,95 @@ need to be setup and configured before stacks are launched.
 
 > ### backup
 
+Since sites are deployed as ECS containers files are stored centrally in EFS.
+This stack will create a new S3 bucket and backup EFS to S3 each night. Stack
+needs to only deployed one time per cluster.
+
+Stack(s) currently deployed:
+
+* va2023-cluster-backup-production-20231211241
+* hls-cluster-backup-production-20240228224
+
 > ### cms
 
+Stack creates an S3 bucket and Cloudfront Distrubution to self host the 
+Sanity.io Studio for an environment.
+
+Stack(s) currently deployed:
+
+* va2023-cms-production-20230724615
+* va2023-cms-production-20231211241
+* hls-cms-staging-20230724615
+* hls-cms-production-20231211241
+
 > ### cms-cert
+
+Creates a certificate in the AWS Certificate Manager for use in a Cloudfront
+Distrubution for the hosted Sanity.io Studio cms stack.
+
+Stack(s) currently deployed:
+
+* va2023-cms-cert-production-20230107900
+* va2023-cms-cert-production-20231211241
+* hls-cms-cert-staging-20240228224
+* hls-cms-cert-production-20240228224
 
 > ### cluster
 
 > ### deploy-pipeline
 
+Notifies Slack about ECR image pushes. 
+
+Stack(s) currently deployed:
+
+* va2023-web-deploy-pipline-20230824740
+
 > ### deploy-user
+
+Creates a OIDCProvider for Github to push ECR images, upload files to the S3
+CMS buckets and create CloudFront Invalidation.
+
+Stack(s) currently deployed:
+
+* va2023-web-deploy-user-20230824740
 
 > ### forum
 
 > ### legacy
 
+This stack creates a MySQL database that the legacy verificationacademy.com can
+be deployed onto.
+
+Stack(s) currently deployed:
+
+* va2023-legacy-database-20231221614
+
 > ### resources
 
+Creates a centralized S3 bucket for use in `Resource Type` content.
+
+Stack(s) currently deployed:
+
+* va2023-resources-production-202306220348
+* hls-resources-production-20240228224
+
 > ### support-center-bucket
+
+
 
 > ### tracking
 
 > ### web-cert
+
+Creates a certificate in the AWS Certificate Manager for use in a Cloudfront
+Distrubution for the Django web stack.
+
+Stack(s) currently deployed:
+
+* va2023-web-static-cert-production-202308031108
+* va2023-web-static-cert-production-20231211241
+* hls-web-static-cert-staging-20240228224
+* hls-web-static-cert-production-20240228224
 
 > ### web
 
@@ -122,7 +191,15 @@ need to be setup and configured before stacks are launched.
 
 ## :mag: Misc AWS Resources Deployed
 
-The following are resources created manually and aren't part of any stacks.
+The following are resources created manually, aren't deployed from this
+infrastructure repo or aren't part of any stacks.
+
+> ### va-legacy-legacy-20231221919
+
+This stack hosts the legacy verificationacademy.com 1.0 site and solr search.
+
+
+
 
 ## :speech_balloon: Notes
 
@@ -307,7 +384,7 @@ make fmt-check
         │       │   ├── cids
         │       │   ├── containers/
         │       │   │   └── web_only.yml                    # discourse custom config
-        │       │   ├── launcher                            # discourse build script [^2]
+        │       │   ├── launcher                            # discourse build script
         │       │   ├── LICENSE
         │       │   ├── plugins
         │       │   ├── README.md
