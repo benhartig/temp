@@ -129,6 +129,16 @@ Stack(s) currently deployed:
 
 > ### cluster
 
+Main stack to create the VPC with an Internet Gateway and private subnets to
+host non public EC2 ECS hosts, EFS, Postgres database and subgroups.
+
+Stack(s) currently deployed:
+
+* ombu-cluster-production-202307130647
+* va2023-cluster-production-20231211241
+* hls-cluster-staging-20240228224
+* hls-cluster-production-20240228224
+
 > ### deploy-pipeline
 
 Notifies Slack about ECR image pushes. 
@@ -147,6 +157,15 @@ Stack(s) currently deployed:
 * va2023-web-deploy-user-20230824740
 
 > ### forum
+
+ECS task that deploys a redis and discourse container.
+
+Stack(s) currently deployed:
+
+* va2023-forum-production-20230724615
+* va2023-forum-production-20231211241
+* hls-forum-staging-20240228224
+* hls-forum-production-20240228224
 
 > ### legacy
 
@@ -168,9 +187,24 @@ Stack(s) currently deployed:
 
 > ### support-center-bucket
 
+Mimics the support center bucket and allows the Django app to store formatted
+json files for the support center app.
 
+Stack(s) currently deployed:
+
+* va2023-support-center-bucket-20230731505
+* hls-support-center-bucket-20240228224
 
 > ### tracking
+
+ECS task that deploys a tracking go applciation, data warehouse and S3 exports.
+
+Stack(s) currently deployed:
+
+* va2023-tracking-production-20230724615
+* va2023-tracking-production-20231211241
+* hls-tracking-staging-20240228224
+* hls-tracking-production-20240228224
 
 > ### web-cert
 
@@ -186,6 +220,15 @@ Stack(s) currently deployed:
 
 > ### web
 
+ECS task that deploys a the main Django application.
+
+Stack(s) currently deployed:
+
+* va2023-web-production-20230724615
+* va2023-web-production-20231211241
+* hls-web-staging-20240228224
+* hls-web-production-20240228224
+
 
 
 
@@ -194,9 +237,68 @@ Stack(s) currently deployed:
 The following are resources created manually, aren't deployed from this
 infrastructure repo or aren't part of any stacks.
 
-> ### va-legacy-legacy-20231221919
+> ### CloudFormation Buckets
+
+Buckets created for cloudformation templetes
+
+* cloudformation-hls-eu-729799859201
+* cloudformation-va2023-eu-729799859201
+
+> ### va-legacy-legacy-20231221919 CloudFormation Stack
 
 This stack hosts the legacy verificationacademy.com 1.0 site and solr search.
+
+> ### TrackerBucketCustodian_va2023_production IAM user
+
+This IAM user was generated to give Alteryx access to the S3 bucket exports
+created by the `tracking` stack.
+
+> ### ombu-administrator
+
+OMBU cross-acccount access role.
+
+> ### ombu-aws-eu-west key pair
+
+EC2 ssh key
+
+> ### QuickSight
+
+The following resources were created for use with Amazon QuickSight
+
+* aws-quicksight-secretsmanager-role-v0
+* aws-quicksight-service-role-v0
+
+> ### Legacy Assets
+
+This is a list of assets that were trasfered from the origial AWS account
+
+S3 Buckets:
+
+* legacy.verificationacademy.com
+
+EBS Snapshots:
+
+* snap-076b8790c2da565b4
+* snap-006fb1e4701ed99d6
+* snap-007b0b28d7151e8b2
+* snap-01f35942392b0148c
+* snap-0c414f945de0094b6
+* snap-09957791f87328849
+* snap-08870ff2fd8ea5850
+* snap-09fb5482a66bac0f8
+* snap-0410494f4849a7b49
+
+RDS Snapshots:
+
+* legacy-db-1-mysql-before-updatedb
+* legacy-391166485564-manual-before-instance-upgrade
+* legacy-391166485564-vdjji213hgsii0-2020-01-06-09-06-backup-final-snapshot
+* legacy-391166485564-vdjji213hgsii0-2020-10-19-09-07-final-snapshot
+* legacy-391166485564-vdjji213hgsii0-2020-01-13-09-07-backup-final-snapshot
+* legacy-391166485564-vdjji213hgsii0-2021-03-04-23-43-manual-last-5-6
+* legacy-391166485564-va-prod-before-encrypt
+* legacy-391166485564-vdjji213hgsii0-snapshot-final
+* manual-prod-db-1postgres-oct-2-2023
 
 
 
