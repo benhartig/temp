@@ -244,33 +244,37 @@ Buckets created for cloudformation templetes
 * cloudformation-hls-eu-729799859201
 * cloudformation-va2023-eu-729799859201
 
-> ### va-legacy-legacy-20231221919 CloudFormation Stack
+> ### Legacy site CloudFormation Stack
 
 This stack hosts the legacy verificationacademy.com 1.0 site and solr search.
 
-> ### TrackerBucketCustodian_va2023_production IAM user
+* va-legacy-legacy-20231221919
+
+> ### Tracking access IAM user
 
 This IAM user was generated to give Alteryx access to the S3 bucket exports
 created by the `tracking` stack.
 
-> ### ombu-administrator
+* TrackerBucketCustodian_va2023_production
 
-OMBU cross-acccount access role.
+> ### OMBU cross-acccount access role
 
-> ### ombu-aws-eu-west key pair
+* ombu-administrator
 
-EC2 ssh key
+> ### EC2 ssh  key pair
+
+* ombu-aws-eu-west
 
 > ### QuickSight
 
-The following resources were created for use with Amazon QuickSight
+The following resources were created for use with Amazon QuickSight.
 
 * aws-quicksight-secretsmanager-role-v0
 * aws-quicksight-service-role-v0
 
 > ### Legacy Assets
 
-This is a list of assets that were trasfered from the origial AWS account
+This is a list of assets that were trasfered from the origial AWS account.
 
 S3 Buckets:
 
@@ -523,5 +527,3 @@ make fmt-check
 
 [^1]:
     https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region
-[^2]:
-    https://github.com/discourse/discourse_docker
