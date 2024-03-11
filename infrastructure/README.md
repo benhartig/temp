@@ -69,7 +69,7 @@ behind a private subnet in the VPC. Then add the following to your `.ssh/config`
 
 ## :diamond_shape_with_a_dot_inside: External Services
 
-The following external services are 3rd party intergrations with the site that
+The following external services are 3rd party integrations with the site that
 need to be setup and configured before stacks are launched.
 
 * [Adobe Marketo Engage](https://marketo.com) - marketing engagement
@@ -106,7 +106,7 @@ Stack(s) currently deployed:
 
 > ### cms
 
-Stack creates an S3 bucket and Cloudfront Distrubution to self host the 
+Stack creates an S3 bucket and Cloudfront Distribution to self host the 
 Sanity.io Studio for an environment.
 
 Stack(s) currently deployed:
@@ -119,7 +119,7 @@ Stack(s) currently deployed:
 > ### cms-cert
 
 Creates a certificate in the AWS Certificate Manager for use in a Cloudfront
-Distrubution for the hosted Sanity.io Studio cms stack.
+Distribution for the hosted Sanity.io Studio cms stack.
 
 Stack(s) currently deployed:
 
@@ -198,7 +198,7 @@ Stack(s) currently deployed:
 
 > ### tracking
 
-ECS task that deploys a tracking go applciation, data warehouse and S3 exports.
+ECS task that deploys a tracking go application, data warehouse and S3 exports.
 
 Stack(s) currently deployed:
 
@@ -210,7 +210,7 @@ Stack(s) currently deployed:
 > ### web-cert
 
 Creates a certificate in the AWS Certificate Manager for use in a Cloudfront
-Distrubution for the Django web stack.
+Distribution for the Django web stack.
 
 Stack(s) currently deployed:
 
@@ -240,7 +240,7 @@ infrastructure repo or aren't part of any stacks.
 
 > ### CloudFormation Buckets
 
-Buckets created for cloudformation templetes
+Buckets created for cloudformation templates
 
 * cloudformation-hls-eu-729799859201
 * cloudformation-va2023-eu-729799859201
@@ -297,7 +297,7 @@ The following resources were created for use with Amazon QuickSight.
 
 > ### Legacy Assets
 
-This is a list of assets that were trasfered from the origial AWS account.
+This is a list of assets that were transferred from the original AWS account.
 
 S3 Buckets:
 
@@ -369,8 +369,8 @@ Parameter Store as SecureString.
 ## :speech_balloon: Notes
 
 > [!IMPORTANT]
-> This infrastructure creates CloudFront Distrubutions in a different region
-than `us-east-1`. CloudFront Distrubution Certificates created by the `cms-cert`
+> This infrastructure creates CloudFront Distributions in a different region
+than `us-east-1`. CloudFront Distribution Certificates created by the `cms-cert`
  and `web-cert` stack must be launched from `us-east-1` [^1], then provide the
 `cms` stack and `web` stack with the ARN of the certificates.
 
@@ -402,7 +402,7 @@ command to start a remote port forward to access the database.
 
 > [!TIP]
 > CMS Cloudfront S3 Bucket Policy sometimes has issues when deploying or
-updating and sometimes access deined when placing the policy for the S3 bucket.
+updating and sometimes access denied when placing the policy for the S3 bucket.
 Solution is to add this inline policy because the normal S3 policy doesn't seem
 to allow for `s3:PutBucketPolicy`.
 >
@@ -431,7 +431,7 @@ forum container.
 
 
 > [!TIP]
-> To create a new admin uesr for the Discourse forum service you can run the
+> To create a new admin user for the Discourse forum service you can run the
 following inside the forum container.
 >
 > ```console
@@ -441,7 +441,7 @@ following inside the forum container.
 
 > [!CAUTION]
 > When creating a new installation of the forum service, you might need to reset
-database, use hte following inside the container to do so, but warning it will
+database, use the following inside the container to do so, but warning it will
 delete everything and reset.
 >
 > ```console
@@ -453,14 +453,14 @@ delete everything and reset.
 
 ## :gear: `stackedup` Commands
 
-Infrastructure makes extensive use of [OMBU Stackedup](https://github.com/ombu/stacks) for configurating, packaging, launching and updating
+Infrastructure makes extensive use of [OMBU Stackedup](https://github.com/ombu/stacks) for configuring, packaging, launching and updating
 AWS CloudFormation templates in the form of stacks.
 
 | Command                                                           | Options    | Description                                                      |
 | ----------------------------------------------------------------- | ---------- | ---------------------------------------------------------------- |
 | `assume-role <account>`                                           |            | Assume a role defined in the accounts section of `config.yaml`   |
 | `stack-launch <service> <instance>`                               | `--config` | Launch a new stack from the `config.yaml`                        |
-| `stack-update <service> <instance>`                               | `--config` | Update an exisitng stack                                         |
+| `stack-update <service> <instance>`                               | `--config` | Update an existing stack                                         |
 | `stack-details <service> <instance>`                              | `--config` | Get details of an existing stack                                 |
 | `container-shell <instance> <service> <service-name> <container>` | `--config` | Shell into an ECS Serviced from a stack defined in `config.yaml` |
 
@@ -486,7 +486,7 @@ AWS CloudFormation templates in the form of stacks.
 | `backup-remote-push-image`               | TAG        |                   | Push local images to the remote image registry            |
 | `install`                                |            |                   | Install the requirements to manage infrastructure         |
 | `fmt-check`                              |            |                   | All format checks.                                        |
-| `fmt-check-infrastructure`               |            |                   | Run cnf and yaml lint on infrastructure aws code.         |
+| `fmt-check-infrastructure`               |            |                   | Run cfn and yaml lint on infrastructure aws code.         |
 | `django/collectstatic`                   | ENV        | YES               | Run collect static on remote webhead.                     |
 | `django/migrate`                         | ENV        | YES               | Run migrate on remote webhead.                            |
 | `prod-console`                           |            | YES               | Container shell for private vpc instances.                |
@@ -559,7 +559,7 @@ make fmt-check
         │       │       └── web.template.yml                # default discourse templete
         │       ├── discourse-verification-academy-theme
         │       └── docker-compose-temp-build.yml
-        ├── forum.yaml                                      # discourse fourm service stack
+        ├── forum.yaml                                      # discourse forum service stack
         ├── legacy.yaml                                     # configuration for the drupal vs 1 site
         ├── Makefile
         ├── README.md
