@@ -273,74 +273,76 @@ make fmt-check
 
     .
     └── infrastructure/
-        ├── .images
+        ├── .images                                         # images for this readme
         ├── backup-parts/
-        │   ├── backup.sh
-        │   ├── Dockerfile
+        │   ├── backup.sh                                   # backup shell script
+        │   ├── Dockerfile                                  # docker file for backup task
         │   ├── README.md
-        │   └── scheduled-task.yaml
-        ├── backup.yaml
+        │   └── scheduled-task.yaml                         # scheduled task for backup
+        ├── backup.yaml                                     # backup stack for efs of the cluster
         ├── cluster-parts/
-        │   ├── database.yaml
-        │   ├── ecs.yaml
-        │   ├── filesystem.yaml
-        │   ├── lifecyclehook.yaml
-        │   ├── load-balancer.yaml
-        │   ├── security-groups.yaml
-        │   └── vpc.yaml
-        ├── cluster.yaml
-        ├── cms-cert.yaml
-        ├── cms.yaml
-        ├── config.hls.yaml
-        ├── config.yaml
+        │   ├── database.yaml                               # cluster database
+        │   ├── ecs.yaml                                    # ecs cluster
+        │   ├── filesystem.yaml                             # efs for each cluster
+        │   ├── lifecyclehook.yaml                          # autoscaling policies for cluster
+        │   ├── load-balancer.yaml                          # application load balancer
+        │   ├── security-groups.yaml                        # cluster security groups
+        │   └── vpc.yaml                                    # vpc with internet gateway, private subnets
+        ├── cluster.yaml                                    # ecs cluster stack
+        ├── cms-cert.yaml                                   # cms cloudfront east-1 cert
+        ├── cms.yaml                                        # sanity hosted cms
+        ├── config.hls.yaml                                 # hls.academy configuration
+        ├── config.yaml                                     # verificationacademy.com configuration
         ├── deploy-pipeline-parts/
         │   └── deploy-notification/
         │       ├── deploy_notification.py
         │       └── deploy_notification_lambda.py
-        ├── deploy-pipeline.yaml
-        ├── deploy-user.yaml
+        ├── deploy-pipeline.yaml                            # notifications for image builds
+        ├── deploy-user.yaml                                # OIDC provider and role
         ├── docker/
-        │   ├── Dockerfile.web.remote
+        │   ├── Dockerfile.web.remote                       # web stack django docker file for ECR
         │   └── forum/
         │       ├── discourse/
         │       │   ├── bin
         │       │   ├── cids
         │       │   ├── containers/
-        │       │   │   └── web_only.yml
-        │       │   ├── launcher
+        │       │   │   └── web_only.yml                    # discourse custom config
+        │       │   ├── launcher                            # discourse build script [^2]
         │       │   ├── LICENSE
         │       │   ├── plugins
         │       │   ├── README.md
         │       │   ├── shared
         │       │   └── templates/
-        │       │       ├── web.ratelimited.template.yml
-        │       │       └── web.template.yml
+        │       │       ├── web.ratelimited.template.yml    # default discourse templete
+        │       │       └── web.template.yml                # default discourse templete
         │       ├── discourse-verification-academy-theme
         │       └── docker-compose-temp-build.yml
-        ├── forum.yaml
-        ├── legacy.yaml
+        ├── forum.yaml                                      # discourse fourm service stack
+        ├── legacy.yaml                                     # configuration for the drupal vs 1 site
         ├── Makefile
         ├── README.md
         ├── requirements.txt
-        ├── resources.yaml
-        ├── support-center-bucket.yaml
+        ├── resources.yaml                                  # global resource type s3 bucket
+        ├── support-center-bucket.yaml                      # mock support center bucket
         ├── tracking-parts/
-        │   ├── tracking-deploy-pipeline.yaml
+        │   ├── tracking-deploy-pipeline.yaml               # notifications for deployments
         │   └── tracking-deploy-script/
         │       └── tracking-deploy-script.py
-        ├── tracking.yaml
-        ├── web-cert.yaml
+        ├── tracking.yaml                                   # go tracking service stack
+        ├── web-cert.yaml                                   # web cloudfront east-1 cert
         ├── web-parts/
-        │   ├── cloudfront.yaml
-        │   ├── queue.yaml
-        │   ├── static-hosting.yaml
-        │   ├── web-deploy-pipeline.yaml
+        │   ├── cloudfront.yaml                             # web cloudfront configuration
+        │   ├── queue.yaml                                  # sqs service for django celery
+        │   ├── static-hosting.yaml                         # s3 bucket creation for 
+        │   ├── web-deploy-pipeline.yaml                    # notifications for deployments
         │   └── web-deploy-script/
         │       └── web-deploy-script.py
-        └── web.yaml
+        └── web.yaml                                        # web django service stack
 
 
 
 
 [^1]:
     https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html#https-requirements-aws-region
+[^2]:
+    https://github.com/discourse/discourse_docker
