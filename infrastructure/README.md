@@ -17,10 +17,10 @@ the https://verificationacademy.com/ and subsequent sites.
 - [Installation](#toolbox-installation)
 - [External Services](#diamond_shape_with_a_dot_inside-external-services)
 - [Building and Deploying Services](#rocket-building-and-deploying-services)
-    - [cms (Sanity Studio)](#cms)
-    - [forum (Discourse)](#cms)
-    - [tracking (Go)](#cms)
-    - [web (Django)](#cms)
+    - [cms (Sanity Studio)](#cms-sanity-studio)
+    - [forum (Discourse)](#forum-discourse)
+    - [tracking (Go)](#tracking-go)
+    - [web (Django)](#web-django)
 - [Stack Architecture](#classical_building-stack-architecture)
 - [Stack Types](#beginner-stack-types)
     - [backup](#backup)
@@ -97,21 +97,50 @@ need to be setup and configured before stacks are launched.
 > ### cms (Sanity Studio)
 
 #### Controlling version
-#### Building a release images
-#### Updating a service with a release
+#### Deploy Configuration
+#### Build and deploy to S3 & CloudFront
 
 > ### forum (Discourse)
 
-#### Controlling version and configuration
+#### Controlling version
+#### Configuration
 #### Building a release images
+
+When in the release `main` branch navigate to `/infrastructure` to build and
+push a ECR image with the following:
+
+```console
+TAG=v1.0.0 make remote-push-image-forum
+```
+
 #### Updating a service with a release
+
+After the image is pushed to ECR update `ImageTag` of the service you want
+updated in the `config.yaml` file.
+
+Example config excerpt:
+```
+instances:
+  production:
+    forum:
+      stack_name: va2023-forum-production-20231211241
+      parameters:
+        ImageTag: 'v1.0.0'
+```
+
+Then issue the following command to udpate the service.
+
+```console
+stack-update <service> <environment>
+stack-update forum production
+```
 
 > ### tracking (Go)
 
 #### Tagging a release
 
-[!NOTE]
-This is done in the `va-activity-tracking` repository
+> [!NOTE]
+> This is done in the `va-activity-tracking` repository
 
 ```console
 git checkout main
@@ -123,8 +152,8 @@ git push origin main
 
 #### Building a release images
 
-[!NOTE]
-This is done in the `va-activity-tracking` repository
+> [!NOTE]
+> This is done in the `va-activity-tracking` repository
 
 When in the release `main` branch navigate to `/infrastructure` to build and
 push a ECR image with the following:
@@ -135,8 +164,8 @@ TAG=v1.0.0 make remote-push-images-web
 
 #### Updating a service with a release
 
-[!NOTE]
-This is done in main `va-2023` repository
+> [!NOTE]
+> This is done in main `va-2023` repository
 
 After the image is pushed to ECR update `ImageTag` of the service you want
 updated in the `config.yaml` file.
