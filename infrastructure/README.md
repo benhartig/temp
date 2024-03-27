@@ -10,12 +10,17 @@ the https://verificationacademy.com/ and subsequent sites.
 
 ## :bulb: 10,000 foot Services Overview for each site
 
-![Services Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-services.png?raw=true)
+![Services Overview](https://github.com/ombu/va-2023/blob/develop/infrastructure/.images/flow-of-services.png?raw=true)
 
 ## :book: Table Of Contents
 
 - [Installation](#toolbox-installation)
 - [External Services](#diamond_shape_with_a_dot_inside-external-services)
+- [Building and Deploying Services](#rocket-building-and-deploying-services)
+    - [cms (Sanity Studio)](#cms)
+    - [forum (Discourse)](#cms)
+    - [tracking (Go)](#cms)
+    - [web (Django)](#cms)
 - [Stack Architecture](#classical_building-stack-architecture)
 - [Stack Types](#beginner-stack-types)
     - [backup](#backup)
@@ -26,6 +31,7 @@ the https://verificationacademy.com/ and subsequent sites.
     - [deploy-user](#deploy-user)
     - [forum](#forum)
     - [legacy](#legacy)
+    - [legacy-db](#legacy-db)
     - [resources](#resources)
     - [support-center-bucket](#support-center-bucket)
     - [tracking](#tracking)
@@ -76,11 +82,132 @@ need to be setup and configured before stacks are launched.
 * [Algolia](https://www.algolia.com) - search backend
 * [Cloudinary](https://cloudinary.com) - media hosting
 * [Cookiebot](https://www.cookiebot.com) - GDPR popup
+* [Docker](https://www.docker.com) - Image building
 * [Github](https://github.com) (optional) - CICD 
 * [Google Analytics](https://analytics.google.com) - analytics tracking
 * [Sanity.io](https://www.sanity.io) - cms and content backend
-* [Sentry.io](https://sentry.io) - error reporting
+* [Sentry.io](https://sentry.io) (optional) - error reporting
 * [Slack](https://slack.com) (optional) - build notifications
+
+
+
+
+## :rocket: Building and Deploying Services
+
+> ### cms (Sanity Studio)
+
+#### Controlling version
+#### Building a release images
+#### Updating a service with a release
+
+> ### forum (Discourse)
+
+#### Controlling version and configuration
+#### Building a release images
+#### Updating a service with a release
+
+> ### tracking (Go)
+
+#### Tagging a release
+
+[!NOTE]
+This is done in the `va-activity-tracking` repository
+
+```console
+git checkout main
+git merge --no-ff --log=50 develop
+git tag v1.0.0
+git push origin v1.0.0
+git push origin main
+```
+
+#### Building a release images
+
+[!NOTE]
+This is done in the `va-activity-tracking` repository
+
+When in the release `main` branch navigate to `/infrastructure` to build and
+push a ECR image with the following:
+
+```console
+TAG=v1.0.0 make remote-push-images-web
+```
+
+#### Updating a service with a release
+
+[!NOTE]
+This is done in main `va-2023` repository
+
+After the image is pushed to ECR update `ImageTag` of the service you want
+updated in the `config.yaml` file.
+
+Example config excerpt:
+```
+instances:
+  production:
+    tracking:
+      stack_name: va2023-tracking-production-20231211241
+      parameters:
+        ImageTag: 'v1.0.0'
+```
+
+Then issue the following command to udpate the service.
+
+```console
+stack-update <service> <environment>
+stack-update tracking production
+```
+
+> [!NOTE]
+> The `testing` environment have been configured with automatic deployments when
+an ECR imaged tagged `latest` gets pushed. No need `stack-update` testing.
+
+> ### web (Django)
+
+#### Tagging a release
+
+```console
+git checkout main
+git merge --no-ff --log=50 develop
+git tag v1.0.0
+git push origin v1.0.0
+git push origin main
+```
+
+#### Building a release images
+
+When in the release `main` branch navigate to `/infrastructure` to build and
+push a ECR image with the following:
+
+```console
+TAG=v1.0.0 make remote-push-images-web
+```
+
+#### Updating a service with a release
+
+After the image is pushed to ECR update `ImageTag` of the service you want
+updated in the `config.yaml` file.
+
+Example config excerpt:
+```
+instances:
+  production:
+    web:
+      stack_name: va2023-web-production-20231211241
+      parameters:
+        ImageTag: 'v1.0.0'
+```
+
+Then issue the following command to udpate the service.
+
+```console
+stack-update <service> <environment>
+stack-update web production
+```
+
+> [!NOTE]  
+> The `testing` environment have been configured with automatic deployments when
+an ECR imaged tagged `latest` gets pushed. No need `stack-update` testing.
 
 
 
@@ -89,7 +216,7 @@ need to be setup and configured before stacks are launched.
 
 ## :bulb: 10,000 foot Stack Overview
 
-![Stack Overview](https://github.com/benhartig/temp/blob/main/infrastructure/.images/flow-of-stacks.png?raw=true)
+![Stack Overview](https://github.com/ombu/va-2023/blob/develop/infrastructure/.images/flow-of-stacks.png?raw=true)
 
 ## :beginner: Stack Types
 
@@ -102,7 +229,9 @@ needs to only deployed one time per cluster.
 Stack(s) currently deployed:
 
 * va2023-cluster-backup-production-20231211241
+* va2023-cluster-backup-development-20240326656
 * hls-cluster-backup-production-20240228224
+* hls-cluster-backup-development-20240326656
 
 > ### cms
 
@@ -111,8 +240,10 @@ Sanity.io Studio for an environment.
 
 Stack(s) currently deployed:
 
-* va2023-cms-production-20230724615
+* va2023-cms-testing-20240325429
+* va2023-cms-beta-202403241256
 * va2023-cms-production-20231211241
+* hls-cms-testing-20240325429
 * hls-cms-staging-20230724615
 * hls-cms-production-20231211241
 
@@ -133,11 +264,28 @@ Stack(s) currently deployed:
 Main stack to create the VPC with an Internet Gateway and private subnets to
 host non public EC2 ECS hosts, EFS, Postgres database and subgroups.
 
+> [!IMPORTANT]
+> CSO team runs a nightly bot to detect compliant AWS resources
+and recommend that EC2 instances stay up to date with the latest AMI releases.
+You should be getting emails that highlight the compliant window if EC2
+instances are detected to have high or critical vulnerabilities. If not
+remedied the EC2 instances will be automatically shutdown within the current
+policy time of 30 days for critical and 60 days for high vulnerabilities. 
+The cluster stack uses rolling AMI so to update just issue the following command
+to force new EC2 instances and transfer ECS to the new instances. You can monitor
+the status of instances also at
+[AWS Inspector By instance](https://eu-west-1.console.aws.amazon.com/inspector/v2/home?region=eu-west-1#/findings/instance).
+>
+> ```console
+> stack-update cluster <type>
+> stack-update cluster development
+> ```
+
 Stack(s) currently deployed:
 
-* ombu-cluster-production-202307130647
+* va2023-cluster-development-20240324733
 * va2023-cluster-production-20231211241
-* hls-cluster-staging-20240228224
+* hls-cluster-development-20240322709
 * hls-cluster-production-20240228224
 
 > ### deploy-pipeline
@@ -163,19 +311,29 @@ ECS task that deploys a redis and discourse container.
 
 Stack(s) currently deployed:
 
-* va2023-forum-production-20230724615
+* va2023-forum-testing-20240325558
+* va2023-forum-beta-202403241256
 * va2023-forum-production-20231211241
+* hls-forum-testing-20230129741
 * hls-forum-staging-20240228224
 * hls-forum-production-20240228224
 
 > ### legacy
+
+This stack hosts the legacy verificationacademy.com 1.0 site and solr search.
+
+Stack(s) currently deployed:
+
+* va-legacy-web-202402241039
+
+> ### legacy-db
 
 This stack creates a MySQL database that the legacy verificationacademy.com can
 be deployed onto.
 
 Stack(s) currently deployed:
 
-* va2023-legacy-database-20231221614
+* va2023-legacy-database-202402241039
 
 > ### resources
 
@@ -202,8 +360,10 @@ ECS task that deploys a tracking go application, data warehouse and S3 exports.
 
 Stack(s) currently deployed:
 
-* va2023-tracking-production-20230724615
+* va2023-tracking-testing-20240325613
+* va2023-tracking-beta-202403241256
 * va2023-tracking-production-20231211241
+* hls-tracking-testing-20240325613
 * hls-tracking-staging-20240228224
 * hls-tracking-production-20240228224
 
@@ -225,8 +385,10 @@ ECS task that deploys a the main Django application.
 
 Stack(s) currently deployed:
 
-* va2023-web-production-20230724615
+* va2023-web-testing-20240325713
+* va2023-web-beta-202403241256
 * va2023-web-production-20231211241
+* hls-web-testing-20240325713
 * hls-web-staging-20240228224
 * hls-web-production-20240228224
 
@@ -249,7 +411,12 @@ Buckets created for cloudformation templates
 
 Discoures can't use role SES so SMTP legacy for this user.
 
-* ses-smtp-va2023-forum-production-20231221-120250
+> [!WARNING]  
+> These keys get rotated every 90 days (enforced by CSO), and you have to
+> update the Parameter Store with those new keys and then force a new
+> deployment of the forum to get emails going again.
+
+* ses-smtp-va2023-forum-production-20240318-143303
 
 > ### Route 53 Hosted zones
 
@@ -267,12 +434,6 @@ configured to point the name servers to the following hosted zones.
 * info@verificationacademy.com
 * noreply@ombuweb.com
 
-> ### Legacy site CloudFormation Stack
-
-This stack hosts the legacy verificationacademy.com 1.0 site and solr search.
-
-* va-legacy-legacy-20231221919
-
 > ### Tracking access IAM user
 
 This IAM user was generated to give Alteryx access to the S3 bucket exports
@@ -286,7 +447,11 @@ created by the `tracking` stack.
 
 > ### EC2 ssh  key pair
 
+Can be retrived from `EC2EUWest1SSHPairs-2GWE23g242` AWS Secrets Manager
+
 * ombu-aws-eu-west
+* hls-aws-eu-west-1
+* va-aws-eu-west-1
 
 > ### QuickSight
 
@@ -317,6 +482,10 @@ EBS Snapshots:
 
 RDS Snapshots:
 
+* legacy-db-1-mysql-before-move
+* prod-db-1-postgres-was-staging-before-relaunch
+* va2023-prod-db-postgres-maual-before-cluster-update
+* va2023-prod-db-postgres-before-tracking-1-0-3-update
 * legacy-db-1-mysql-before-updatedb
 * legacy-391166485564-manual-before-instance-upgrade
 * legacy-391166485564-vdjji213hgsii0-2020-01-06-09-06-backup-final-snapshot
@@ -362,6 +531,16 @@ Parameter Store as SecureString.
 /<site>/<environment>/web_sentry_dsn
 /<site>/<environment>/web_studio_secret
 ```
+
+> [!TIP]
+> All secrets for each environment are stored in System Managers Parameter Store and can retrieve 
+with the following command.
+>
+> ```console
+> export AWS_DEFAULT_REGION=eu-west-1
+> aws ssm get-parameters-by-path --path /<application>/<environment> --with-decryption --recursive --output table
+> aws ssm get-parameters-by-path --path /va2023/testing --with-decryption --recursive --output table
+> ```
 
 
 
@@ -439,6 +618,21 @@ following inside the forum container.
 > ```
 
 
+> [!TIP]
+> To update a user to an admin user for the Discourse forum service you can run
+the following inside the forum container if email services are down.
+>
+> ```console
+> cd /var/www/discourse
+> rails c
+> user = User.find_by_email("<admin_email>")
+> user.admin = true
+> user.approved = true
+> user.save
+> EmailToken.confirm(user.email_tokens.first.token)
+> ```
+
+
 > [!CAUTION]
 > When creating a new installation of the forum service, you might need to reset
 database, use the following inside the container to do so, but warning it will
@@ -463,6 +657,15 @@ AWS CloudFormation templates in the form of stacks.
 | `stack-update <service> <instance>`                               | `--config` | Update an existing stack                                         |
 | `stack-details <service> <instance>`                              | `--config` | Get details of an existing stack                                 |
 | `container-shell <instance> <service> <service-name> <container>` | `--config` | Shell into an ECS Serviced from a stack defined in `config.yaml` |
+
+> [!TIP]
+> This repo contains multiple Academy sites and config files. Currently deployed
+are the va and hls sites. To switch between site configuration use the `--config`
+flag. Example as follows:
+>
+> ```console
+> stack-update --config config.hls.yaml cluster <type>
+> ```
 
 
 
