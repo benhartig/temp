@@ -14,8 +14,6 @@ Cloudfront Distrubution and host a compiled version of the Sanity Studio
 from `./studio`.
 
 
-Test change.
-
 
 
 ## :book: Table Of Contents
